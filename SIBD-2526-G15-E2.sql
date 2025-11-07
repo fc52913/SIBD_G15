@@ -97,8 +97,21 @@ CREATE TABLE solista(
     FOREIGN KEY (insi) REFERENCES artista ON DELETE CASCADE,
 )
 
-CREATE TABLE grupo(
+CREATE TABLE grupo (
     isni NUMBER(16),
     PRIMARY KEY (insi) REFERENCES artista
     FOREIGN KEY (insi) REFERENCES artista ON DELETE CASCADE,
+)
+
+CREATE TABLE lista_personalizada (
+    nome VARCHAR(80) NOT NULL,
+    PRIMARY KEY nome
+)
+
+
+CREATE TABLE cria (
+    nome VARCHAR(80),
+    username VARCHAR(100),
+    PRIMARY KEY (nome, username),
+    FOREIGN KEY nome REFERENCES lista_personalizada,
 )
