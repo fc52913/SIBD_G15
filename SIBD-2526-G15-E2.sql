@@ -13,7 +13,7 @@ CREATE TABLE artista (
 	isni NUMBER(16) PRIMARY KEY,
 	nome CHAR(100) UNIQUE NOT NULL,
 	ano_inicio_atividade NUMBER(4),
-	CHECK (ano_inicio_atividade BETWEEN 1800 AND 2025)
+	CHECK (ano_inicio_atividade BETWEEN 1800 AND YEAR(GETDATE()))
 )
 
 
@@ -22,11 +22,11 @@ CREATE TABLE album (
  	titulo char(100) UNIQUE NOT NULL,
  	tipo CHAR(30),
  	ano_de_lancamento NUMBER(4), 
- 	CHECK (ano_de_lancamento BETWEEN 1800 AND 2025)	
+ 	CHECK (ano_de_lancamento BETWEEN 1800 AND YEAR(GETDATE())	
  )
 
 
-CREATE TABLE uilizador (
+CREATE TABLE utilizador (
     username CHAR(100) PRIMARY KEY,
     email CHAR(100) UNIQUE NOT NULL,
     palavra_passe CHAR(100) NOT NULL,
