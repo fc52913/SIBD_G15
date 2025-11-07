@@ -1,13 +1,3 @@
--- Ex. Students(sid: integer, name: string, login: string, age: integer, gpa: real) 
-
--- CREATE TABLE students ( sid INTEGER,
---  name CHAR(30),
---  login CHAR(20),
---  age INTEGER,
---  gpa REAL )
-
-
---Album( mbid: CHAR(36), titulo: string, tipo: string, ano_de_lancamento: CHAR(4))
 
 CREATE TABLE artista (
 	isni NUMBER(16) PRIMARY KEY,
@@ -22,12 +12,13 @@ CREATE TABLE album (
  	titulo char(100) UNIQUE NOT NULL,
  	tipo CHAR(30),
  	ano_de_lancamento NUMBER(4), 
- 	CHECK (ano_de_lancamento BETWEEN 1800 AND YEAR(GETDATE())	
+ 	CHECK (tipo IN ('Single', 'EP', 'LP'))
+	CHECK (ano_de_lancamento BETWEEN 1800 AND YEAR(GETDATE())	
  )
 
 
 CREATE TABLE utilizador (
-    username CHAR(100) PRIMARY KEY,
+    username CHAR(100) PRIMARY KEY, --apenas letras e digitos
     email CHAR(100) UNIQUE NOT NULL,
     palavra_passe CHAR(100) NOT NULL,
     data_nascimento DATE NOT NULL
@@ -44,6 +35,8 @@ CREATE TABLE versao (
     isni NUMBER(16) PRIMARY KEY,
     nome CHAR(80) NOT NULL,
     ano_inicio_atividade DATE
+	--podemos por CHECK (ano_inicio_atividade <= ano_de_lancamento) 
+	--para satisfazer a ria 8? ou deixamos so como comentario
  )
 
 CREATE TABLE favorito (
@@ -74,6 +67,7 @@ CREATE TABLE possui (
     PRIMARY KEY (username, ean13),
     FOREIGN KEY (username) REFERENCES utilizador,
     FOREIGN KEY (ean13) REFERENCES versao
+	--CHECK (data_adicao >= ano_de_lancamento) ? RIA 16
 )
 
 CREATE TABLE de (
