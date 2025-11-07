@@ -75,3 +75,30 @@ CREATE TABLE possui (
     FOREIGN KEY (username) REFERENCES utilizador,
     FOREIGN KEY (ean13) REFERENCES versao
 )
+
+CREATE TABLE de (
+    ean13 NUMBER(13),
+    mbid NUMBER(36),
+    tipo VARCHAR(7),
+    PRIMARY KEY (ean13, mbid, tipo),
+    FOREIGN kEY (ean13) REFERENCES versao,
+    FOREIGN KEY (mbid, tipo) REFERENCES em
+)
+
+CREATE TABLE membro (
+    isni NUMBER(16),
+    PRIMARY KEY isni,
+    FOREIGN KEY (isni) REFERENCES artista --ON DELETE CASCADE
+)
+
+CREATE TABLE solista(
+    isni NUMBER(16),
+    PRIMARY KEY (insi) REFERENCES artista,
+    FOREIGN KEY (insi) REFERENCES artista ON DELETE CASCADE,
+)
+
+CREATE TABLE grupo(
+    isni NUMBER(16),
+    PRIMARY KEY (insi) REFERENCES artista
+    FOREIGN KEY (insi) REFERENCES artista ON DELETE CASCADE,
+)
