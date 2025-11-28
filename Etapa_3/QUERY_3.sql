@@ -17,28 +17,24 @@
 --   Utilizador (username, email, senha, nascimento, artista)
 --       Possui (utilizador, album, desde)
 -- ----------------------------------------------------------------------------
-
-SELECT AR.nome, AR.inicio AS inicio_de_atividade
+                        -- ERROS CORRIGIDOS --
+ SELECT AR.nome, AR.inicio AS inicio_de_atividade
   FROM artista AR, album AL, utilizador U, possui P
- WHERE (AR.isni = AL.artista)
-   AND (AL.ean = P.album)
-   AND (U.username = P.utilizador)
---P.desde TO_CHAR(data, 'HH24') BETWEEN  12 AND 20
---((U.nascimento TO_CHAR(data,'YYYY')) >= 2000)
-   AND NOT EXISTS ( --remove os U nasc. depoisd e 2000 que nao cumpram a condicao
+ WHERE AR.isni = AL.artista
+   AND AL.ean = P.album
+   AND U.username = P.utilizador
+   AND NOT EXISTS ( 
    SELECT 1
      FROM utilizador U2
     WHERE U2.nascimento >= 2000
-      AND NOT EXISTS ( --a condicao de possuir pelo menos 1 AL desse AR 
+      AND NOT EXISTS ( 
       SELECT 1
         FROM album AL2, possui P2
-       WHERE (U2.username = P2.utilizador)
-         AND (AL2.ean = P2.album)
-         AND (AL2.artista = AR.isni) 
-         AND (TO_CHAR(P2.desde,'HH24') BETWEEN '12' AND '19')
-    )
-)
-GROUP BY AR.isni
---HAVING (( TO_CHAR(CURRENT_DATE(),'YYYY')) - AL.ano <= 2)
-HAVING (MAX(AL.ano)) >= (TO_CHAR(SYSDATE,'YYYY')) - 2
+       WHERE U2.username = P2.utilizador
+         AND AL2.ean = P2.album
+         AND AL2.artista = AR.isni 
+         AND TO_NUMBER(TO_CHAR(P2.desde,'HH24')) BETWEEN 12 AND 19)
+      )
+GROUP BY AR.isni, AR.nome, AR.inicio
+HAVING (MAX(AL.ano)) >= TO_NUMBER(TO_CHAR(SYSDATE,'YYYY')) - 2
 ORDER BY AR.nome ASC, AR.inicio DESC;
