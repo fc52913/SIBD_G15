@@ -4,7 +4,7 @@ IS
     artista_nao_existe EXCEPTION; -- exceção usada para quando o utilizador removido não existe.
     CURSOR c_albuns IS -- cursor dos álbuns do artista.
         SELECT ean FROM album
-        WHERE (artista = isni)
+        WHERE (artista = isni_in)
         FOR UPDATE OF album;
 BEGIN
     DELETE FROM artista
