@@ -263,3 +263,33 @@ BEGIN
         WHEN artista_nao_existe THEN
             DBMS_OUTPUT.PUT_LINE('ERRO: artista com isni ' || isni || ' não existe.');
 END remove_artista;
+
+-- 9. Lista álbuns 
+--------------------------------------------------------------------------------------
+
+FUNCTION lista_albuns(utilizador_in IN utilizador.username%TYPE)
+  RETURN SYS_REFCURSOR
+IS
+    c_albuns SYS_REFCURSOR;
+BEGIN
+    OPEN c_albuns FOR
+        SELECT al.ean, al.titulo, al.tipo, al.ano, al.suporte, al.versao,
+            CASE
+                WHEN u.artista = ar.isni THEN ar.nome || '*'
+                ELSE ar.nome
+            END AS nome_artista
+        FROM possui p
+        JOIN album al
+            ON p.album = al.ean
+        JOIN artista ar
+            ON al.artista = ar.isni
+        JOIN utilizador u
+            ON u.username = p.utilizador
+        WHERE p.utilizador = utilizador_in
+        ORDER BY
+            al.ano DESC,
+            ar.nome ASC,
+            al.titulo ASC;
+
+    RETURN c_albuns;
+END lista_albuns;
